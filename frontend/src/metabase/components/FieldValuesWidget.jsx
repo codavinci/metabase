@@ -35,7 +35,7 @@ const fetchParameterPossibleValues = async (
   dashboardId,
   { id: paramId, filteringParameters = [] } = {},
   parameters,
-  prefix,
+  searchString,
 ) => {
   // build a map of parameter ID -> value for parameters that this parameter is filtered by
   const otherValues = _.chain(parameters)
@@ -44,8 +44,8 @@ const fetchParameterPossibleValues = async (
     .object()
     .value();
 
-  const args = { paramId, prefix, dashId: dashboardId, ...otherValues };
-  const endpoint = prefix
+  const args = { paramId, searchString, dashId: dashboardId, ...otherValues };
+  const endpoint = searchString
     ? DashboardApi.parameterSearch
     : DashboardApi.parameterValues;
   // now call the new chain filter API endpoint
@@ -469,16 +469,16 @@ export class FieldValuesWidget extends Component {
               {this.renderOptions(props)}
             </div>
           )}
-          filterOption={(option, filterString) =>
-            (option[0] != null &&
-              String(option[0])
-                .toLowerCase()
-                .indexOf(filterString.toLowerCase()) === 0) ||
-            (option[1] != null &&
-              String(option[1])
-                .toLowerCase()
-                .indexOf(filterString.toLowerCase()) === 0)
-          }
+          filterOption={(option, filterString) => {
+            const lowerCaseFilterString = filterString.toLowerCase();
+            return option.some(
+              value =>
+                value != null &&
+                String(value)
+                  .toLowerCase()
+                  .includes(lowerCaseFilterString),
+            );
+          }}
           onInputChange={this.onInputChange}
           parseFreeformValue={v => {
             // trim whitespace
