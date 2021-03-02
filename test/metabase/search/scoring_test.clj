@@ -148,18 +148,18 @@
                  ["rasta" "toucan"]
                  ["aviary" "stats"]))))
     (testing "it abbreviates when necessary"
-      (is (= [(no-match "one two three four five…eleven twelve thirteen fourteen fifteen")
+      (is (= [(no-match "one two…eleven twelve")
               (match "rasta toucan")
-              (no-match "one two three four five…and this is the end")]
+              (no-match "one two…the end")]
              (context
                  (tokens '(rasta toucan))
-                 (tokens '(one two three four five
-                               this should not be included
-                               eleven twelve thirteen fourteen fifteen
-                               rasta toucan
-                               one two three four five
-                               some other noise
-                               and this is the end))))))))
+                 (tokens '(one two
+                           this should not be included
+                           eleven twelve
+                           rasta toucan
+                           one two
+                           some other noise
+                           the end))))))))
 
 (deftest test-largest-common-subseq-length
   (let [subseq-length (partial #'search/largest-common-subseq-length =)]

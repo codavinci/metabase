@@ -25,7 +25,7 @@
 
 (def ^:const surrounding-match-context
   "Show this many words of context before/after matches in long search results"
-  5)
+  2)
 
 (def searchable-models
   "Models that can be searched. The order of this list also influences the order of the results: items earlier in the
