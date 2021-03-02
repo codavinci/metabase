@@ -5,7 +5,7 @@ ENV FC_LANG en-US LC_CTYPE en_US.UTF-8
 # dependencies
 RUN apk -U upgrade &&  \
     apk add --update --no-cache bash ttf-dejavu fontconfig curl java-cacerts && \
-    mkdir /app && mkdir /app/certs && \
+    mkdir -p /app/certs && \
     curl https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -o /app/certs/rds-combined-ca-bundle.pem  && \
     /opt/java/openjdk/bin/keytool -noprompt -import -trustcacerts -alias aws-rds -file /app/certs/rds-combined-ca-bundle.pem -keystore /etc/ssl/certs/java/cacerts -keypass changeit -storepass changeit && \
     curl https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem -o /app/certs/DigiCertGlobalRootG2.crt.pem  && \
