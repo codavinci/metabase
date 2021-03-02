@@ -15,8 +15,9 @@
 (s/defn tokenize :- [s/Str]
   "Break a search `query` into its constituent tokens"
   [query :- s/Str]
-  (filter seq
-          (str/split query #"\s+")))
+  (->> (str/split query #"(\s|\b)+")
+       (filter seq)
+       (remove (partial re-matches #"\A\p{IsPunctuation}+\z"))))
 
 (def ^:private largest-common-subseq-length
   (memoize/fifo

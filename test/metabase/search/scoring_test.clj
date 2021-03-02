@@ -13,8 +13,6 @@
 
 (deftest tokenize-test
   (testing "basic tokenization"
-    (is (= ["Rasta" "the" "Toucan's" "search"]
-           (search/tokenize "Rasta the Toucan's search")))
     (is (= ["Rasta" "the" "Toucan"]
            (search/tokenize "                Rasta\tthe    \tToucan     ")))
     (is (= []
@@ -22,7 +20,19 @@
     (is (= []
            (search/tokenize "")))
     (is (thrown-with-msg? Exception #"does not match schema"
-                          (search/tokenize nil)))))
+                          (search/tokenize nil))))
+  (testing "punctuation"
+    (is (= ["Rasta" "the" "toucan" "s" "search"]
+           (search/tokenize "Rasta the toucan's search")))
+    (is (= ["function" "call" "with" "4" "arguments"]
+           (search/tokenize "function(call, with, 4, arguments)")))
+    (is (= ["select" "lower" "card" "name" "from" "report_card" "card"]
+           (search/tokenize "select lower(card.name) from report_card card"))))
+  (testing "non-English"
+    (is (= ["Rasta" "el" "tucán"]
+           (search/tokenize "Rasta el tucán")))
+    (is (= ["他是巨嘴鸟" "我爱他"]
+           (search/tokenize "他是巨嘴鸟，我爱他")))))
 
 (defn scorer->score
   [scorer]
