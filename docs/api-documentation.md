@@ -1821,11 +1821,13 @@ Notification about a potential schema change to one of our `Databases`.
 
 ##### PARAMS:
 
-*  **`id`**
+*  **`id`**: the id of the data source
 
-*  **`table_id`**
+*  **`table_id`**: the id of the table
 
-*  **`table_name`**
+*  **`table_name`**: the name of the table
+
+*  **`scan`**: can be `full` (full sync) or `schema` (schema sync).
 
 
 ## `DELETE /api/permissions/group/:group-id`
